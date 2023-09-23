@@ -27,7 +27,7 @@
                 <span class="d-flex align-items-center justify-content-between">
 
                   <p>{{post?.title}}</p>
-                  <button mat-icon-button color="warn" aria-label="Delete post">
+                  <button mat-icon-button color="warn" aria-label="Delete post" (click)="deletePost(post.id)">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </span>

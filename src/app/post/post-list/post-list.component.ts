@@ -49,6 +49,10 @@ export class PostListComponent {
     this._store.dispatch(postActions.loadPosts({ request }));
   }
 
+  deletePost(id: string): void {
+    this._store.dispatch(postActions.deletePost({ id }));
+  }
+  
   searchPosts(input: Event): void {
     const searchTerm = (input?.target as HTMLInputElement)?.value || '';
 

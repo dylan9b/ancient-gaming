@@ -36,3 +36,9 @@ export interface PostErrorResponse {
     extensions: string;
   }[];
 }
+
+
+export interface PostDeleteResponse {
+  id: string;
+  isDeleted: boolean;
+}

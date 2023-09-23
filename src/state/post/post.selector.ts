@@ -11,7 +11,7 @@ export const selectAllPosts = createSelector(
 
 export const selectAllPostsCount = createSelector(
   selectPostsState,
-  (state: PostState) => state?.posts?.meta.totalCount
+  (state: PostState) => state?.posts?.meta?.totalCount
 );
 
 export const selectStatus = createSelector(
