@@ -31,8 +31,9 @@ export class PostListComponent {
   allPostsCount$ = this._store.select(selectAllPostsCount);
   status$ = this._store.select(selectStatus);
 
-  displayedColumns: string[] = ['id', 'title', 'user'];
+  displayedColumns: string[] = ['id', 'title'];
   pageSizeOptions: number[] = [15, 20, 25];
+  searchTerm: string = '';
 
   constructor(private _store: Store<AppState>) {
     let request = {} as PostRequest;
@@ -41,6 +42,22 @@ export class PostListComponent {
       paginate: {
         limit: this.pageSizeOptions[0],
         page: 1,
+      },
+    };
+
+    this._store.dispatch(postActions.loadPosts({ request }));
+  }
+
+  searchPosts(input: Event): void {
+    const searchTerm = (input?.target as HTMLInputElement)?.value || '';
+
+    this.searchTerm = searchTerm;
+    let request = {} as PostRequest;
+
+    request = {
+      ...request,
+      search: {
+        q: searchTerm,
       },
     };
 
@@ -57,8 +74,14 @@ export class PostListComponent {
       },
     };
 
-    debugger;
-
+    if (this.searchTerm.length) {
+      request = {
+        ...request,
+        search: {
+          q: this.searchTerm,
+        },
+      };
+    }
     this._store.dispatch(postActions.loadPosts({ request }));
   }
 }

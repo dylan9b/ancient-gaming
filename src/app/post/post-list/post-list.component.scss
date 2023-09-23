@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     &__container {
-      max-height: 90vh;
+      max-height: 70vh;
       overflow: auto;
     }
   }
@@ -11,5 +11,15 @@
     bottom: 0px;
     position: sticky;
     z-index: 10;
+  }
+  &__spinner {
+    &-container {
+      min-height: 70vh;
+      // z-index: 1212231;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }

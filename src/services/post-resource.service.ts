@@ -1,11 +1,11 @@
-import { Observable, catchError, map, of, throwError } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import {
   PostErrorResponse,
   PostResponse,
 } from '../app/post/_model/response/post-response.model';
 
 import { Apollo } from 'apollo-angular';
-import { GET_POSTS } from 'src/graphql/resolvers/posts.resolver';
+import { GET_POSTS } from 'src/graphql/queries/posts.query';
 import { Injectable } from '@angular/core';
 import { PostRequest } from 'src/app/post/_model/request/post-request.model';
 
@@ -23,12 +23,9 @@ export class PostResourceService {
       })
       .valueChanges.pipe(
         map((response) => {
-          console.log('respose', response);
           return response.data.posts;
         }),
         catchError((error) => {
-          console.log('error', error);
-
           throw error;
         })
       );
