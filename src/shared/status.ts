@@ -4,3 +4,10 @@ export const STATUS = {
   SUCCESS: 'success',
   ERROR: 'error',
 };
+
+export const CTA_ACTION_STATES = {
+  ADD: 'add',
+  DELETE: 'delete',
+  VIEW: 'view',
+  PENDING: 'pending',
+};

@@ -1,6 +1,27 @@
 @import "custom-styles";
 
 .app-posts {
+  &__add {
+    text-decoration: none;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: $purple;
+    border-radius: 50%;
+    border: 1px solid $purple;
+    color: white;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      margin-right: 15px;
+      color: white;
+    }
+  }
+
   &__table {
     display: flex;
     align-items: center;
@@ -17,7 +38,7 @@
   }
   &__spinner {
     &-container {
-      min-height: 70vh;
+      min-height: 100vh;
       background-color: transparent;
       display: flex;
       align-items: center;

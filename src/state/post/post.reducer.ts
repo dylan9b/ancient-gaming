@@ -40,29 +40,11 @@ export const postReducer = createReducer(
   })),
   on(postActions.deletePostSuccess, (state, { post }) => {
     if (post.isDeleted) {
-      debugger;
       const updatedPosts = state?.posts?.data?.filter(
         (item) => item.id !== post?.id
       );
 
       const updatedCount = state.posts.meta.totalCount - 1;
-      const test = {
-        ...state,
-        posts: {
-          ...state.posts,
-          data: {
-            ...updatedPosts
-          },
-          // data: {
-          //   ...updatedPosts,
-          // },
-          meta: { totalCount: updatedCount },
-        },
-        error: null,
-        status: STATUS.SUCCESS,
-      };
-
-      debugger;
 
       return {
         ...state,
