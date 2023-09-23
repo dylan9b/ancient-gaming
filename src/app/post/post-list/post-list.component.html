@@ -1,1 +1,11 @@
-<p>post-list works!</p>
+<section class="app-posts">
+  <div class="container">
+    <div class="col-12">
+      posts: {{(allPosts$ | async | json)}}
+    </div>
+
+    <div class="12">
+      count: {{allPostsCount$ | async}}
+    </div>
+  </div>
+</section>

@@ -1,10 +1,13 @@
 export interface PostResponse {
+  data:  PostItemResponse[];
+  meta: PostMetaDataResponse;
+}
+
+export interface PostItemResponse {
   id: string;
   title: string;
   body: string;
   user: PostUserResponse;
-
-  meta: PostMetaDataResponse;
   comments: PostCommentsResponse;
 }
 
@@ -25,4 +28,11 @@ export interface PostCommentsResponse {
   meta: {
     totalCount: number;
   };
+}
+
+export interface PostErrorResponse {
+  errors: {
+    message: string;
+    extensions: string;
+  }[];
 }
