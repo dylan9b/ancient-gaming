@@ -22,6 +22,11 @@
       "es2020",
       "dom"
     ],
+    "paths": {
+      "@services/*": [
+        "src/services/*"
+      ]
+    },
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
