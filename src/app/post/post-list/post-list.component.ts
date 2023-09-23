@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { PostItemResponse } from '../_model/response/post-response.model';
 import { PostRequest } from '../_model/request/post-request.model';
+import { PostUtilService } from '@services/post-util.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ctaActions } from 'src/state/cta/cta.actions';
@@ -36,24 +37,19 @@ export class PostListComponent {
 
   selectedPostToDelete: string = '';
 
-  constructor(private _store: Store<AppState>, private _router: Router) {
-    let request = {} as PostRequest;
-    request = {
-      ...request,
-      paginate: {
-        limit: this.pageSizeOptions[0],
-        page: 1,
-      },
-    };
-
-    this._store.dispatch(postActions.loadPosts({ request }));
+  constructor(
+    private _store: Store<AppState>,
+    private _router: Router,
+    private _postUtilService: PostUtilService
+  ) {
+    this._postUtilService.loadPosts();
   }
 
   onPostClick(cta: string, post: PostItemResponse): void {
     this._store.dispatch(
       ctaActions.updateCTA({ action: CTA_ACTION_STATES.PENDING })
     );
-    
+
     if (cta === CTA_ACTION_STATES.PENDING) {
       this._router.navigate(['/posts', post?.id]);
     }

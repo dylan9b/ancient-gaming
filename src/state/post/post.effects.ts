@@ -40,6 +40,24 @@ export class PostEffects {
     )
   );
 
+  updatePost$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(postActions.updatePost),
+      switchMap((action) => {
+        return from(this._postService.updatePost$(action.post)).pipe(
+          map((post) => {
+            this._snackBar.open('Post successfully updated!', 'Success', {
+              panelClass: 'status__200',
+            });
+
+            return postActions.updatePostSuccess({ post });
+          }),
+          catchError((error) => of(postActions.deletePostFail({ error })))
+        );
+      })
+    )
+  );
+
   deletePost$ = createEffect(() =>
     this._actions$.pipe(
       ofType(postActions.deletePost),

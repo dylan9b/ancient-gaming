@@ -14,6 +14,11 @@ export const selectAllPostsCount = createSelector(
   (state: PostState) => state?.posts?.meta?.totalCount
 );
 
+export const selectPost = (id: string) =>
+  createSelector(selectPostsState, (state: PostState) => {
+    return state?.posts?.data?.find((post) => post?.id === id) || null; 
+  });
+
 export const selectStatus = createSelector(
   selectPostsState,
   (state: PostState) => state?.status

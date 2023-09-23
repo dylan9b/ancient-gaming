@@ -33,6 +33,37 @@ export const postReducer = createReducer(
     status: STATUS.ERROR,
   })),
 
+  // UPDATE POST
+  on(postActions.updatePost, (state) => ({
+    ...state,
+    status: STATUS.LOADING,
+  })),
+  on(postActions.updatePostSuccess, (state, { post }) => {
+    const updatedPosts = state.posts.data.map((item) => {
+      if (item.id !== post.id) return item;
+
+      return {
+        ...item,
+        ...post,
+      };
+    });
+
+    return {
+      ...state,
+      posts: {
+        ...state.posts,
+        data: [...updatedPosts],
+      },
+      error: null,
+      status: STATUS.SUCCESS,
+    };
+  }),
+  on(postActions.updatePostFail, (state, { error }) => ({
+    ...state,
+    error: { ...error },
+    status: STATUS.ERROR,
+  })),
+
   // DELETE POSTS
   on(postActions.deletePost, (state) => ({
     ...state,
@@ -50,9 +81,7 @@ export const postReducer = createReducer(
         ...state,
         posts: {
           ...state.posts,
-          data: [
-            ...updatedPosts
-          ],
+          data: [...updatedPosts],
           meta: { totalCount: updatedCount },
         },
         error: null,
