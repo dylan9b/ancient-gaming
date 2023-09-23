@@ -1,0 +1,15 @@
+.app-posts {
+  &__table {
+    display: flex;
+    align-items: center;
+    &__container {
+      max-height: 90vh;
+      overflow: auto;
+    }
+  }
+  &__mat-paginator {
+    bottom: 0px;
+    position: sticky;
+    z-index: 10;
+  }
+}
