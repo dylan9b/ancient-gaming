@@ -1,10 +1,10 @@
 <section class="app-posts" *ngIf="(status$ | async) as status">
   <div class="container">
     <div class="row">
-      <div class="col-12">
+      <div class="col-8 mx-auto">
         <h1>All Posts</h1>
       </div>
-      <div class="col-10 mx-auto">
+      <div class="col-8 mx-auto">
         <span class="app-posts__filter__container">
           <mat-form-field class="w-100">
             <mat-icon matPrefix>search</mat-icon>
@@ -13,14 +13,32 @@
           </mat-form-field>
         </span>
       </div>
-      <div class="col-10 mx-auto">
-        <div class="app-posts__table__container">
+      <div class="col-8 mx-auto">
+        <div class="app-posts__table__container" [class.overflow-hidden]="status === 'loading'">
 
           <div class="app-posts__spinner-container" *ngIf="status === 'loading'">
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
           </div>
 
-          <table class="mat-elevation-z8" mat-table *ngIf="(allPosts$ | async) as posts" [dataSource]="posts"
+          <article *ngIf="(allPosts$ | async) as posts" class="row">
+            <div class="col-12" *ngFor="let post of posts; let i - index;">
+              <div class="app-posts__item">
+
+                <span class="d-flex align-items-center justify-content-between">
+
+                  <p>{{post?.title}}</p>
+                  <button mat-icon-button color="warn" aria-label="Delete post">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </span>
+                <small class="app-posts__item__user">Created by: {{post?.user?.username}}</small>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- <table class="mat-elevation-z8" mat-table *ngIf="(allPosts$ | async) as posts" [dataSource]="posts"
             [hidden]="status === 'loading'">
 
             <ng-container *ngFor="let column of displayedColumns">
@@ -29,19 +47,25 @@
                 <td mat-cell *matCellDef="let element">
                   {{element?.[column]}} </td>
               </ng-container>
+
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> Actions</th>
+              <td mat-cell *matCellDef="let element">
+                Delete </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
+          </table> -->
 
-          <mat-paginator class="app-posts__mat-paginator" [length]="allPostsCount$ | async"
-            [pageSize]="pageSizeOptions[0]" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons
-            aria-label="Select page of posts" (page)="
+
+        <mat-paginator class="app-posts__mat-paginator" [length]="allPostsCount$ | async"
+          [pageSize]="pageSizeOptions[0]" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons
+          aria-label="Select page of posts" (page)="
           handlePageEvent($event)">
-          </mat-paginator>
-        </div>
-
+        </mat-paginator>
       </div>
     </div>
   </div>

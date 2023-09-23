@@ -20,13 +20,14 @@ import { postActions } from 'src/state/post/post.actions';
   styleUrls: ['./post-list.component.scss'],
 })
 export class PostListComponent {
-  allPosts$ = this._store.select(selectAllPosts).pipe(
-    map((response) => {
-      const dataSource = new MatTableDataSource<PostItemResponse>();
-      dataSource.data = response!;
-      return dataSource;
-    })
-  );
+  allPosts$ = this._store.select(selectAllPosts);
+  // .pipe(
+  //   map((response) => {
+  //     const dataSource = new MatTableDataSource<PostItemResponse>();
+  //     dataSource.data = response!;
+  //     return dataSource;
+  //   })
+  // );
 
   allPostsCount$ = this._store.select(selectAllPostsCount);
   status$ = this._store.select(selectStatus);
