@@ -23,9 +23,12 @@ export class PostResourceService {
       })
       .valueChanges.pipe(
         map((response) => {
+          console.log('respose', response);
           return response.data.posts;
         }),
         catchError((error) => {
+          console.log('error', error);
+
           throw error;
         })
       );

@@ -36,10 +36,7 @@ export class PostEffects {
         // }
         return from(this._postService.getPosts$(action.request)).pipe(
           map((posts) => postActions.loadPostsSuccess({ posts: posts })),
-          catchError((error) => {
-            debugger;
-            return of(postActions.loadPostsFail({ error }));
-          })
+          catchError((error) => of(postActions.loadPostsFail({ error })))
         );
       })
     )

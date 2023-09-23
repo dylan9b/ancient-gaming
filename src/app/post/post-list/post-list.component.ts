@@ -8,6 +8,7 @@ import {
 import { AppState } from 'src/state/app.state';
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator';
 import { PostItemResponse } from '../_model/response/post-response.model';
 import { PostRequest } from '../_model/request/post-request.model';
 import { Store } from '@ngrx/store';
@@ -30,20 +31,34 @@ export class PostListComponent {
   allPostsCount$ = this._store.select(selectAllPostsCount);
   status$ = this._store.select(selectStatus);
 
-  displayedColumns: string[] = ['id', 'title'];
+  displayedColumns: string[] = ['id', 'title', 'user'];
+  pageSizeOptions: number[] = [15, 20, 25];
 
   constructor(private _store: Store<AppState>) {
     let request = {} as PostRequest;
     request = {
       ...request,
       paginate: {
-        limit: 25,
+        limit: this.pageSizeOptions[0],
         page: 1,
       },
     };
 
     this._store.dispatch(postActions.loadPosts({ request }));
+  }
 
-    this.allPosts$.subscribe((x) => console.log('x', x));
+  handlePageEvent(event: PageEvent): void {
+    let request = {} as PostRequest;
+    request = {
+      ...request,
+      paginate: {
+        limit: event.pageSize,
+        page: event.pageIndex + 1,
+      },
+    };
+
+    debugger;
+
+    this._store.dispatch(postActions.loadPosts({ request }));
   }
 }
