@@ -39,52 +39,54 @@ export class PostEffects {
       withLatestFrom(this.allPosts$, this.allPostsCount$),
       switchMap(([action, statePosts, stateCount]) => {
         console.log('statecount', stateCount);
-        if (statePosts?.length && action?.request?.paginate?.page === 1) {
-          let storedData = {} as PostResponse;
-          storedData = {
-            ...storedData,
-            data: [...statePosts],
-            meta: { totalCount: stateCount },
-          };
+        // if (statePosts?.length > 0) {
+        //   let storedData = {} as PostResponse;
+        //   storedData = {
+        //     ...storedData,
+        //     data: [...statePosts],
+        //     meta: { totalCount: stateCount },
+        //   };
 
-          return of(postActions.loadPostsSuccess({ posts: storedData }));
-        }
+        //   return of(postActions.loadPostsSuccess({ posts: storedData }));
+        // }
         return from(this._postService.getPosts$(action.request)).pipe(
           map((posts) => {
-            let test = {} as PostResponse;
-            test = {
-              ...test,
-            };
+            return postActions.loadPostsSuccess({ posts });
+            // let test = {} as PostResponse;
+            // test = {
+            //   ...test,
+            // };
 
-            if (stateCount != null) {
-              const newItems = stateCount - posts?.meta?.totalCount;
+            // if (stateCount != null) {
+            //   debugger;
+            //   const newItems = stateCount - posts?.meta?.totalCount;
 
-              if (newItems > 0) {
-                for (let i = 0; i < newItems; i++) {
-                  const toAdd = statePosts[i];
-                  test = {
-                    ...test,
-                    data: [toAdd, ...posts.data],
-                  };
-                }
+            //   if (newItems > 0) {
+            //     for (let i = 0; i < newItems; i++) {
+            //       const toAdd = statePosts[i];
+            //       test = {
+            //         ...test,
+            //         data: [toAdd, ...posts.data],
+            //       };
+            //     }
 
-                const updatedCount = posts?.meta?.totalCount + newItems;
-                test = {
-                  ...test,
-                  meta: { totalCount: updatedCount },
-                };
-              } else {
-                test = {
-                  ...posts,
-                };
-              }
-            } else {
-              test = {
-                ...posts,
-              };
-            }
+            //     const updatedCount = posts?.meta?.totalCount + newItems;
+            //     test = {
+            //       ...test,
+            //       meta: { totalCount: updatedCount },
+            //     };
+            //   } else {
+            //     test = {
+            //       ...posts,
+            //     };
+            //   }
+            // } else {
+            //   test = {
+            //     ...posts,
+            //   };
+            // }
 
-            return postActions.loadPostsSuccess({ posts: test });
+            // return postActions.loadPostsSuccess({ posts: test });
           }),
           catchError((error) => of(postActions.loadPostsFail({ error })))
         );

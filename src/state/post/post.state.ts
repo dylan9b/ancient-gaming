@@ -4,4 +4,6 @@ export interface PostState {
   posts: PostResponse;
   error: PostErrorResponse | null;
   status: string;
+
+  deletedPosts: string[];
 }

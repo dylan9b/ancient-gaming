@@ -9,6 +9,7 @@ export const initialState: PostState = {
   posts: {} as PostResponse,
   error: null,
   status: STATUS.PENDING,
+  deletedPosts: [],
 };
 
 export const postReducer = createReducer(
@@ -20,6 +21,25 @@ export const postReducer = createReducer(
     status: STATUS.LOADING,
   })),
   on(postActions.loadPostsSuccess, (state, { posts }) => {
+    if (posts?.data) {
+      const updatedPosts = posts?.data?.filter(
+        (post) => !state?.deletedPosts?.includes(post?.id)
+      );
+      const updatedTotalCount =
+        posts?.meta?.totalCount - state?.deletedPosts?.length;
+
+      return {
+        ...state,
+        posts: {
+          ...posts,
+          data: [...updatedPosts],
+          meta: { totalCount: updatedTotalCount },
+        },
+        error: null,
+        status: STATUS.SUCCESS,
+      };
+    }
+
     return {
       ...state,
       posts: posts,
@@ -112,6 +132,7 @@ export const postReducer = createReducer(
           data: [...updatedPosts],
           meta: { totalCount: updatedCount },
         },
+        deletedPosts: [...state.deletedPosts, post.id],
         error: null,
         status: STATUS.SUCCESS,
       };

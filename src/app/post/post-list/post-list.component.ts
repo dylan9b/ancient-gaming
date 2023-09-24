@@ -97,6 +97,8 @@ export class PostListComponent {
         },
       };
     }
+
+    debugger;
     this._store.dispatch(postActions.loadPosts({ request }));
   }
 
