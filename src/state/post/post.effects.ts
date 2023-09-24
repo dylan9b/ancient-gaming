@@ -1,23 +1,13 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  PostItemResponse,
-  PostResponse,
-} from 'src/app/post/_model/response/post-response.model';
-import {
-  catchError,
-  from,
-  map,
-  of,
-  pipe,
-  switchMap,
-  withLatestFrom,
-} from 'rxjs';
+import { catchError, from, map, of, switchMap } from 'rxjs';
 import { selectAllPosts, selectAllPostsCount } from './post.selector';
 
 import { AppState } from '../app.state';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PostItemResponse } from 'src/app/post/_model/response/post-response.model';
 import { PostResourceService } from '@services/post-resource.service';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { postActions } from './post.actions';
 
@@ -27,7 +17,8 @@ export class PostEffects {
     private _actions$: Actions,
     private _store: Store<AppState>,
     private _postService: PostResourceService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _router: Router
   ) {}
 
   allPosts$ = this._store.select(selectAllPosts);
@@ -36,57 +27,13 @@ export class PostEffects {
   loadPosts$ = createEffect(() =>
     this._actions$.pipe(
       ofType(postActions.loadPosts),
-      withLatestFrom(this.allPosts$, this.allPostsCount$),
-      switchMap(([action, statePosts, stateCount]) => {
-        console.log('statecount', stateCount);
-        // if (statePosts?.length > 0) {
-        //   let storedData = {} as PostResponse;
-        //   storedData = {
-        //     ...storedData,
-        //     data: [...statePosts],
-        //     meta: { totalCount: stateCount },
-        //   };
-
-        //   return of(postActions.loadPostsSuccess({ posts: storedData }));
-        // }
+      switchMap((action) => {
         return from(this._postService.getPosts$(action.request)).pipe(
           map((posts) => {
-            return postActions.loadPostsSuccess({ posts });
-            // let test = {} as PostResponse;
-            // test = {
-            //   ...test,
-            // };
-
-            // if (stateCount != null) {
-            //   debugger;
-            //   const newItems = stateCount - posts?.meta?.totalCount;
-
-            //   if (newItems > 0) {
-            //     for (let i = 0; i < newItems; i++) {
-            //       const toAdd = statePosts[i];
-            //       test = {
-            //         ...test,
-            //         data: [toAdd, ...posts.data],
-            //       };
-            //     }
-
-            //     const updatedCount = posts?.meta?.totalCount + newItems;
-            //     test = {
-            //       ...test,
-            //       meta: { totalCount: updatedCount },
-            //     };
-            //   } else {
-            //     test = {
-            //       ...posts,
-            //     };
-            //   }
-            // } else {
-            //   test = {
-            //     ...posts,
-            //   };
-            // }
-
-            // return postActions.loadPostsSuccess({ posts: test });
+            return postActions.loadPostsSuccess({
+              posts,
+              request: action.request,
+            });
           }),
           catchError((error) => of(postActions.loadPostsFail({ error })))
         );
@@ -105,6 +52,10 @@ export class PostEffects {
             });
 
             return postActions.createPostSuccess({ post });
+          }),
+          switchMap((result) => {
+            this._router.navigate(['/posts', result?.post?.id]);
+            return of(result);
           }),
           catchError((error) => of(postActions.createPostFail({ error })))
         );

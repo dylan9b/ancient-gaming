@@ -30,11 +30,9 @@ export class PostResourceService {
       })
       .pipe(
         map((response) => {
-          debugger;
           return response.data.posts;
         }),
         catchError((error) => {
-          debugger;
           throw error;
         })
       );

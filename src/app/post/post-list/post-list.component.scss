@@ -22,7 +22,7 @@
     }
   }
 
-  &__table {
+  &__content {
     display: flex;
     align-items: center;
     &__container {
@@ -36,15 +36,7 @@
     z-index: 10;
     background-color: transparent;
   }
-  &__spinner {
-    &-container {
-      min-height: 100vh;
-      background-color: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
+
   &__item {
     background: white;
     border-radius: 5px;
@@ -75,12 +67,5 @@
       box-shadow: 0px 2px 15px 2px rgba(black, 0.068);
       cursor: pointer;
     }
-  }
-
-  &__card {
-    margin-bottom: 10px;
-    border-radius: 10px;
-    border: 1px solid lightgray;
-    background-color: white;
   }
 }

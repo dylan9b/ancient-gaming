@@ -11,7 +11,7 @@
         </span>
       </div>
       <div class="col-8 mx-auto">
-        <div class="app-posts__table__container" [class.overflow-hidden.h-100]="status === 'loading'">
+        <div class="app-posts__content__container" [class.overflow-hidden.h-100]="status === 'loading'">
           <article class="row">
             <div class="col-12" *ngFor="let post of posts; let i = index; trackBy: postTrackByFn"
               (click)="onPostClick(cta, post)">

@@ -140,7 +140,7 @@ export class PostItemComponent implements OnInit, OnDestroy {
     };
 
     this._store.dispatch(postActions.createPost({ post: newPost }));
-    this._router.navigate(['/posts', 'list']);
+    // this._router.navigate(['/posts', 'list']);
   }
 
   /**

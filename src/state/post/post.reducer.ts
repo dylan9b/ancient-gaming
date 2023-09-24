@@ -10,6 +10,7 @@ export const initialState: PostState = {
   error: null,
   status: STATUS.PENDING,
   deletedPosts: [],
+  addedPosts: [],
 };
 
 export const postReducer = createReducer(
@@ -20,13 +21,20 @@ export const postReducer = createReducer(
     ...state,
     status: STATUS.LOADING,
   })),
-  on(postActions.loadPostsSuccess, (state, { posts }) => {
+  on(postActions.loadPostsSuccess, (state, { posts, request }) => {
     if (posts?.data) {
-      const updatedPosts = posts?.data?.filter(
+      // remove any posts which have been marked as delete.
+      let updatedPosts = posts?.data?.filter(
         (post) => !state?.deletedPosts?.includes(post?.id)
       );
       const updatedTotalCount =
         posts?.meta?.totalCount - state?.deletedPosts?.length;
+
+      updatedPosts = [...updatedPosts];
+
+      if (request?.paginate?.page === 1) {
+        updatedPosts = [...state.addedPosts, ...updatedPosts];
+      }
 
       return {
         ...state,
@@ -90,18 +98,17 @@ export const postReducer = createReducer(
     status: STATUS.LOADING,
   })),
   on(postActions.createPostSuccess, (state, { post }) => {
-    const updatedPosts = [post, ...state.posts.data];
     const updatedCount = state.posts.meta.totalCount + 1;
 
     return {
       ...state,
       posts: {
         ...state.posts,
-        data: [...updatedPosts],
         meta: {
           totalCount: updatedCount,
         },
       },
+      addedPosts: [post, ...state.addedPosts],
       error: null,
       status: STATUS.SUCCESS,
     };
@@ -122,7 +129,6 @@ export const postReducer = createReducer(
       const updatedPosts = state?.posts?.data?.filter(
         (item) => item.id !== post?.id
       );
-
       const updatedCount = state.posts.meta.totalCount - 1;
 
       return {

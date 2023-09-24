@@ -15,7 +15,7 @@ export const postActions = createActionGroup({
   events: {
     // GET POSTS
     'Load Posts': props<{ request: PostRequest | null }>(),
-    'Load Posts Success': props<{ posts: PostResponse }>(),
+    'Load Posts Success': props<{ posts: PostResponse, request: PostRequest | null }>(),
     'Load Posts Fail': props<{ error: PostErrorResponse }>(),
 
     // UPDATE POST
