@@ -16,6 +16,19 @@
 }
 
 .app-post-item {
+  &__back-icon {
+    font-size: 50px;
+    height: 50px !important;
+    width: 50px !important;
+    color: $purple;
+    cursor: pointer;
+    margin-bottom: 3em;
+  }
+
+  &__delete-icon {
+    @extend .app-post-item__back-icon;
+    color: $ruby-red;
+  }
   &__footer {
     display: flex;
     align-items: center;

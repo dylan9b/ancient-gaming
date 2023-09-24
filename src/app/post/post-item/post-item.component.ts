@@ -156,7 +156,14 @@ export class PostItemComponent implements OnInit, OnDestroy {
       title: rawForm?.title,
       body: rawForm?.body,
     };
-debugger;
+
     this._store.dispatch(postActions.updatePost({ post: updatedNote }));
+  }
+
+  deletePost(): void {
+    const id = this.form.get('id')?.value;
+    this._store.dispatch(postActions.deletePost({ id }));
+
+    this._router.navigate(['/posts', 'list']);
   }
 }

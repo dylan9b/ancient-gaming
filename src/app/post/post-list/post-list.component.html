@@ -1,10 +1,7 @@
 <section class="app-posts" *ngIf="(status$ | async) as status">
   <div class="container" *ngIf="(cta$ | async) as cta">
-    <div class="row">
-      <div class="col-8 mx-auto">
-        <h1>All Posts</h1>
-      </div>
-      <div class="col-8 mx-auto">
+    <div class="row" *ngIf="(allPosts$ | async) as posts">
+      <div class="col-8 mx-auto mt-5">
         <span class="app-posts__filter__container">
           <mat-form-field class="w-100">
             <mat-icon matPrefix>search</mat-icon>
@@ -15,12 +12,7 @@
       </div>
       <div class="col-8 mx-auto">
         <div class="app-posts__table__container" [class.overflow-hidden.h-100]="status === 'loading'">
-          <!-- 
-          <div class="app-posts__spinner-container" *ngIf="status === 'loading' && cta !== 'delete'">
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-          </div> -->
-
-          <article *ngIf="(allPosts$ | async) as posts" class="row">
+          <article class="row">
             <div class="col-12" *ngFor="let post of posts; let i = index; trackBy: postTrackByFn"
               (click)="onPostClick(cta, post)">
 

@@ -8,14 +8,15 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs';
+import { selectAllPosts, selectAllPostsCount } from './post.selector';
 
 import { AppState } from '../app.state';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PostResourceService } from '@services/post-resource.service';
+import { PostResponse } from 'src/app/post/_model/response/post-response.model';
 import { Store } from '@ngrx/store';
 import { postActions } from './post.actions';
-import { selectAllPosts } from './post.selector';
 
 @Injectable()
 export class PostEffects {
@@ -27,11 +28,22 @@ export class PostEffects {
   ) {}
 
   allPosts$ = this._store.select(selectAllPosts);
+  allPostsCount$ = this._store.select(selectAllPostsCount);
 
   loadPosts$ = createEffect(() =>
     this._actions$.pipe(
       ofType(postActions.loadPosts),
-      switchMap((action) => {
+      withLatestFrom(this.allPosts$, this.allPostsCount$),
+      switchMap(([action, posts, count]) => {
+        if (posts?.length) {
+          let storedData = {} as PostResponse;
+          storedData = {
+            ...storedData,
+            data: [...posts],
+            meta: { totalCount: count },
+          };
+          return of(postActions.loadPostsSuccess({ posts: storedData }));
+        }
         return from(this._postService.getPosts$(action.request)).pipe(
           map((posts) => postActions.loadPostsSuccess({ posts: posts })),
           catchError((error) => of(postActions.loadPostsFail({ error })))
