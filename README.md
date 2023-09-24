@@ -32,6 +32,7 @@ During this test, some assumptions were taken:
 
 ## The users, comments and other related objects were not deemed necessry to include as they were not part of the task. Task included CRUD operations on posts only.
 ## Only the basic entities of the posts were included (id, body and title). Comments and other neted objects were omitted.
+## Title was disabled for the posts (eidt mode) as the search query seems to be filtering by them and upon modification, the search query yields in false positives.
 ## Since the API does not update data within the database, some assumptions were made in this case:
 ### Searching is done through the API against an id or title which is present in the server. Hence new data, which is never persisted, will never be fetched.
 ### The search variable 'q' does not seem consistent. I tested with a partial title ('sed') and got incorrect results. The same result was produced on the online graphql environment provided in the test and locally.
