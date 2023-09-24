@@ -64,6 +64,34 @@ export const postReducer = createReducer(
     status: STATUS.ERROR,
   })),
 
+  // CREATE POST
+  on(postActions.createPost, (state) => ({
+    ...state,
+    status: STATUS.LOADING,
+  })),
+  on(postActions.createPostSuccess, (state, { post }) => {
+    const updatedPosts = [post, ...state.posts.data];
+    const updatedCount = state.posts.meta.totalCount + 1;
+
+    return {
+      ...state,
+      posts: {
+        ...state.posts,
+        data: [...updatedPosts],
+        meta: {
+          totalCount: updatedCount,
+        },
+      },
+      error: null,
+      status: STATUS.SUCCESS,
+    };
+  }),
+  on(postActions.createPostFail, (state, { error }) => ({
+    ...state,
+    error: { ...error },
+    status: STATUS.ERROR,
+  })),
+
   // DELETE POSTS
   on(postActions.deletePost, (state) => ({
     ...state,

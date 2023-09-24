@@ -5,6 +5,7 @@ import {
 } from 'src/app/post/_model/response/post-response.model';
 import { createActionGroup, props } from '@ngrx/store';
 
+import { PostCreateRequest } from 'src/app/post/_model/request/post-create-request.model';
 import { PostDeleteResponse } from 'src/app/post/_model/response/post-delete-response.model';
 import { PostRequest } from 'src/app/post/_model/request/post-request.model';
 import { PostUpdateRequest } from 'src/app/post/_model/request/post-update-request.model';
@@ -27,14 +28,9 @@ export const postActions = createActionGroup({
     'Delete Post Success': props<{ post: PostDeleteResponse }>(),
     'Delete Post Fail': props<{ error: PostErrorResponse }>(),
 
-    // POST NOTE
-    //   'Post Note': props<{ note: INoteResponse }>(),
-    //   'Post Note Success': props<{ note: INoteResponse }>(),
-    //   'Post Note Fail': props<{ error: string }>(),
-
-    // SELECT NOTE
-    //   'Select Note': props<{ note: INoteResponse }>(),
-    //   'Select Note Success': props<{ note: INoteResponse }>(),
-    //   'Select Note Fail': props<{ error: string }>(),
+    // CREATE POST
+    'Create Post': props<{ post: PostCreateRequest }>(),
+    'Create Post Success': props<{ post: PostItemResponse }>(),
+    'Create Post Fail': props<{ error: PostErrorResponse }>(),
   },
 });

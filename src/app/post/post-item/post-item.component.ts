@@ -11,6 +11,7 @@ import { Observable, map, of, switchMap } from 'rxjs';
 
 import { AppState } from 'src/state/app.state';
 import { CTA_ACTION_STATES } from 'src/shared/status';
+import { PostCreateRequest } from '../_model/request/post-create-request.model';
 import { PostItemFormControl } from './_model/post-item-form-control.model';
 import { PostItemResponse } from '../_model/response/post-response.model';
 import { PostItemValidation } from './_model/post-item-validation.model';
@@ -100,6 +101,8 @@ export class PostItemComponent implements OnInit, OnDestroy {
     form.title.setValue(post?.title);
     form.body.setValue(post?.body);
 
+    post?.id ? form.title.disable(): null;
+
     return this._formBuilder.group(form);
   }
 
@@ -128,20 +131,16 @@ export class PostItemComponent implements OnInit, OnDestroy {
    * Add a new post.
    */
   private addPost(): void {
-    // const rawForm = this.form.getRawValue();
-    // let newNote = {} as INoteRequest;
-    // newNote = {
-    //   ...newNote,
-    //   title: rawForm?.title,
-    //   body: rawForm?.body,
-    //   dateCreated: new Date().toJSON(),
-    //   dateModified: new Date().toJSON(),
-    //   isComplete: false,
-    //   isArchived: false,
-    //   isPinned: false,
-    // };
-    // this._store.dispatch(noteActions.postNote({ note: newNote }));
-    // this._router.navigate(['/notes', 'list']);
+    const rawForm = this.form.getRawValue();
+    let newPost = {} as PostCreateRequest;
+    newPost = {
+      ...newPost,
+      title: rawForm?.title,
+      body: rawForm?.body,
+    };
+
+    this._store.dispatch(postActions.createPost({ post: newPost }));
+    this._router.navigate(['/posts', 'list']);
   }
 
   /**
@@ -150,14 +149,15 @@ export class PostItemComponent implements OnInit, OnDestroy {
   private editPost(): void {
     const rawForm = this.form.getRawValue();
 
-    let updatedNote = {} as PostUpdateRequest;
-    updatedNote = {
+    let updatedPost = {} as PostUpdateRequest;
+    updatedPost = {
+      ...updatedPost,
       id: rawForm?.id,
       title: rawForm?.title,
       body: rawForm?.body,
     };
 
-    this._store.dispatch(postActions.updatePost({ post: updatedNote }));
+    this._store.dispatch(postActions.updatePost({ post: updatedPost }));
   }
 
   deletePost(): void {

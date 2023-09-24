@@ -1,5 +1,5 @@
-export interface PostUpdateRequest {
+import { PostCreateRequest } from './post-create-request.model';
+
+export interface PostUpdateRequest extends PostCreateRequest {
   id: string;
-  title: string;
-  body: string;
 }

@@ -7,9 +7,11 @@ import {
 } from '../app/post/_model/response/post-response.model';
 
 import { Apollo } from 'apollo-angular';
+import { CREATE_POST } from 'src/graphql/mutations/post-create.mutation';
 import { DELETE_POST } from 'src/graphql/mutations/post-delete.mutation';
 import { GET_POSTS } from 'src/graphql/queries/posts.query';
 import { PUT_POST } from 'src/graphql/mutations/post-update.mutation';
+import { PostCreateRequest } from 'src/app/post/_model/request/post-create-request.model';
 import { PostDeleteResponse } from 'src/app/post/_model/response/post-delete-response.model';
 import { PostRequest } from 'src/app/post/_model/request/post-request.model';
 import { PostUpdateRequest } from 'src/app/post/_model/request/post-update-request.model';
@@ -28,9 +30,11 @@ export class PostResourceService {
       })
       .pipe(
         map((response) => {
+          debugger;
           return response.data.posts;
         }),
         catchError((error) => {
+          debugger;
           throw error;
         })
       );
@@ -51,6 +55,27 @@ export class PostResourceService {
       .pipe(
         map((response) => {
           return response.data?.updatePost || ({} as PostItemResponse);
+        }),
+        catchError((error) => {
+          throw error;
+        })
+      );
+  }
+
+  createPost$(request: PostCreateRequest | null): Observable<PostItemResponse> {
+    return this._apollo
+      .mutate<{ createPost: PostItemResponse }>({
+        mutation: CREATE_POST,
+        variables: {
+          input: {
+            title: request?.title,
+            body: request?.body,
+          },
+        },
+      })
+      .pipe(
+        map((response) => {
+          return response.data?.createPost || ({} as PostItemResponse);
         }),
         catchError((error) => {
           throw error;
